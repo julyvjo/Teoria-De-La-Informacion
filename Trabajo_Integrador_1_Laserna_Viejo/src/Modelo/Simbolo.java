@@ -4,8 +4,8 @@ public class Simbolo {
 	private char valor;
 	private float probabilidad;
 
-	//comentario de lau
-	
+	// comentario de lau
+
 	public Simbolo(char valor, float probabilidad) {
 
 		this.valor = valor;
@@ -32,10 +32,16 @@ public class Simbolo {
 		return (float) (Math.log10(1 / probabilidad) / Math.log10(2));
 	}
 
+	/*
+	 * 
+	 */
 	public float getInformacionNat() {
 		return (float) Math.log(1 / probabilidad);
 	}
 
+	/*
+	 * 
+	 */
 	public float getInformacionHart() {
 		return (float) Math.log10(1 / probabilidad);
 	}
