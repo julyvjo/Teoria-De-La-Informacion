@@ -4,6 +4,8 @@ public class Simbolo {
 	private char valor;
 	private float probabilidad;
 
+	//comentario de lau
+	
 	public Simbolo(char valor, float probabilidad) {
 
 		this.valor = valor;
