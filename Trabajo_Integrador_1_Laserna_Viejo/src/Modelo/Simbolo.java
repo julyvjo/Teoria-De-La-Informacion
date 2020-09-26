@@ -26,11 +26,17 @@ public class Simbolo {
 		this.probabilidad = probabilidad;
 	}
 
+
+	public float getInformacionBin() {
+		return (float) (Math.log10(1 / probabilidad) / Math.log10(2));
+	}
+
+
 	/*
 	 * 
 	 */
-	public float getInformacionBin() {
-		return (float) (Math.log10(1 / probabilidad) / Math.log10(2));
+	public float getInformacionNat() {
+		return (float) Math.log(1 / probabilidad);
 	}
 
 	/*
