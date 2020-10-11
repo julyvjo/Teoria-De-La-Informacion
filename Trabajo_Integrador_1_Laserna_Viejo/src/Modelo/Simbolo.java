@@ -4,7 +4,7 @@ public class Simbolo {
 	private char valor;
 	private float probabilidad;
 
-	// comentario de july 4
+	// comentario de lau 1
 
 	public Simbolo(char valor, float probabilidad) {
 
