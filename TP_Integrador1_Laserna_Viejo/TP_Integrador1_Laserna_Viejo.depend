@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1603307784 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_laserna_viejo\main.c
+	<stdio.h>
+	<stdlib.h>
+
