@@ -5,7 +5,13 @@ void MemNula();
 
 void leerMemNula(double prob[], int *n);
 
-void vecCantInfo(double prob[], int n, double cantInfo[] );
+void CantInfo(double prob[], double vecCantInfo[], int n);
+
+double entropiaNula(double prob[], double vecCantInfo[], int n);
+
+void extension(int ext[], double prob[], int n, int h, int k);
+
+void mostrarResultados(double prob[], double vecCantInfo[], int n);
 
 //*****************************************************
 //funciones para markov

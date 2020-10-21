@@ -7,7 +7,6 @@ int main()
 {
     int op;
 
-
     printf("recuerde cargar los datos en el archivo txt correspondiente\n\n");
     printf("Seleccione tipo de fuente\n\n");
     printf("1) Memoria Nula\n");
