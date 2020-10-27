@@ -9,13 +9,13 @@ int main()
     int op;
     srand(time(NULL));
 
-    printf("Recuerde cargar los datos en el Archivo .txt correspondiente!\n\n");
+    printf("CARGAR LOS ARCHIVOS ANTES DE CONTINUAR!\n\n");
     printf("Seleccione un tipo de Fuente:\n\n");
     printf("1) Memoria Nula\n");
     printf("2) Markov\n");
 
-    scanf("%d",&op); //leemos opcion
-    system("cls");  //clear screen
+    scanf("%d",&op); //Lee opcion
+    system("cls");  //Clear screen
 
     if( op == 1 )
         MemNula();
