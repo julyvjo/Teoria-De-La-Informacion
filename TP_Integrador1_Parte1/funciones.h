@@ -1,6 +1,7 @@
 #define N_MAX 10
+#define ITERACIONES 7
 //*****************************************************
-//funciones para memoria nula
+//Funciones Memoria Nula
 
 void MemNula();
 
@@ -10,12 +11,16 @@ void CantInfo(double prob[], double vecCantInfo[], int n);
 
 double entropiaNula(double prob[], double vecCantInfo[], int n);
 
-void extension(int ext[], double prob[], int n, int h, int k);
+void Extension(int ext[], double prob[], int n, int h, int k);
 
-void mostrarResultadosNula(double prob[], double vecCantInfo[], int n);
+void mostrarResultadosNula(double prob[], double probSim[], double vecCantInfo[], int n);
+
+void SimulacionNula(double prob[], double probSim[], int n);
+
+int simulaSimbolo(double prob[], int n);
 
 //*****************************************************
-//funciones para markov
+//Funciones Markov
 
 void Markov();
 
@@ -32,6 +37,6 @@ double entropiaMarkov(double mat[][N_MAX], double v[N_MAX], int n);
 void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n);
 
 //*****************************************************
-//funciones comunes
 
+//Funciones comunes
 double info(double p);
