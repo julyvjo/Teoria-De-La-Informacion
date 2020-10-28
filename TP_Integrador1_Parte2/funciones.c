@@ -67,11 +67,6 @@ void Calculos(){
 
     leerDatos(prob,codigos,&n);
 
-    //for(int i=0; i<n; i++){
-    //    printf("%4.3f %s\n",prob[i],codigos[i]);
-    //}
-    //printf("%6.4f",longMedia(prob,codigos,n));
-
     if(cumpleKraft(codigos,n))
         printf("Cumple Kraft");
     else
@@ -125,3 +120,4 @@ int cumpleKraft(char codigos[][LONG_MAX_CODIGO], int n){
         rta = 1;
     return rta;
 }
+
