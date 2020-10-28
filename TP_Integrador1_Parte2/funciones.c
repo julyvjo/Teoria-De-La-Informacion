@@ -58,7 +58,7 @@ void mostrarCodificacion(double prob[], char codigos[][LONG_MAX_CODIGO], int n){
     printf("*********************************\n");
 }
 
-//*****************************************************************CALCULOS*****************************************************************
+//*****************************************************************CALCULOS************************************************************************************************************
 
 void Calculos(){
     char codigos[CANT_CODIGOS][LONG_MAX_CODIGO];
@@ -67,10 +67,9 @@ void Calculos(){
 
     leerDatos(prob,codigos,&n);
 
-    if(cumpleKraft(codigos,n))
-        printf("Cumple Kraft");
-    else
-        printf("Me parece q no cumple Kraft");
+    //mostrar resultados
+    mostrarResultados(prob,codigos,n);
+
 }
 
 void leerDatos(double prob[], char codigos[][LONG_MAX_CODIGO], int *n){
@@ -119,5 +118,28 @@ int cumpleKraft(char codigos[][LONG_MAX_CODIGO], int n){
     if(sum <= 1)
         rta = 1;
     return rta;
+}
+
+void mostrarResultados(double prob[], char codigos[][LONG_MAX_CODIGO], int n){
+
+    printf("\n************ RESULTADOS ************\n");
+
+    printf("Si  P(Si)    Li    Codigo\n");
+    for(int i=0;i<n;i++){
+        printf("S%d  %4.3f    %d     %s\n",i+1,prob[i],strlen(codigos[i]),codigos[i]);
+    }
+
+    printf("\nH(S) = %5.3f\n",entropia(prob,n));
+    printf("L = %5.3f\n",longMedia(prob,codigos,n));
+
+    if(cumpleKraft(codigos,n))
+        printf("Cumple la inecuacion de Kraft\n");
+    else
+        printf("No cumple la inecuacion de Kraft\n");
+
+    printf("es compacto?\n");
+
+    printf("************************************\n\n\n");
+
 }
 

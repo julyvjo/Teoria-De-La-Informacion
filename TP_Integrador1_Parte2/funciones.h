@@ -20,3 +20,5 @@ double longMedia(double prob[], char codigos[][LONG_MAX_CODIGO], int n);
 
 int cumpleKraft(char codigos[][LONG_MAX_CODIGO], int n);
 
+void mostrarResultados(double prob[], char codigos[][LONG_MAX_CODIGO], int n);
+
