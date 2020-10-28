@@ -5,7 +5,7 @@
 #include <time.h>
 #include "funciones.h"
 
-//Memoria Nula
+//******************************************* MEMORIA NULA *******************************************
 void MemNula(){
     double prob[N_MAX];
     double vecCantInfo[N_MAX];
@@ -18,10 +18,12 @@ void MemNula(){
     SimulacionNula(prob,probSim,n);
     mostrarResultadosNula(prob,probSim,vecCantInfo,n);
 
-    printf("Desea calcular extension? ingrese K o 0 para salir\n\n");
+    printf("Desea calcular extension? Ingrese el orden de la extension (0 para cancelar): ");
     scanf("%d",&k);
 
     if( 0 < k && k < 11){
+        printf("\nEXTENSION DE GRADO %d:\n\n",k);
+        printf("S^%di         P(S^%di)       I(S^%di)\n",k,k,k);
         Extension(ext,prob,n,0,k);
         printf("\nH(S^%d) = %lf\n",k,entropiaNula(prob,vecCantInfo,n)*k);
     }
@@ -46,12 +48,14 @@ void leerMemNula(double prob[], int *n){
     fclose(arch);
 }
 
+//Carga el vector con la cantidad de informacion de casa simbolo
 void CantInfo(double prob[], double vecCantInfo[], int n){
     for(int i=0; i<n; i++){
         vecCantInfo[i] = info(prob[i]);
     }
 }
 
+//Calcula la entropia en fuente de memoria NULA
 double entropiaNula(double prob[], double vecCantInfo[], int n){
     double e = 0;
 
@@ -62,6 +66,7 @@ double entropiaNula(double prob[], double vecCantInfo[], int n){
     return e;
 }
 
+//Metodo recursivo para mostrar la extension de una fuente
 void Extension(int ext[], double prob[], int n, int h, int k){
     if(h==k){ //caso llegado al final de la recursividad
         double cantInfo = 1, probabilidad = 1;
@@ -73,8 +78,8 @@ void Extension(int ext[], double prob[], int n, int h, int k){
         for(int i=0; i<k; i++){
             printf("S%d",ext[i]);
         }
-        printf("\t%lf",probabilidad);
-        printf("\t%lf \n",cantInfo);
+        printf("%14.3f",probabilidad);
+        printf("%14.3f \n",cantInfo);
 
     }else{
         for(int i=0; i<n; i++){
@@ -126,7 +131,7 @@ void mostrarResultadosNula(double prob[], double probSim[], double vecCantInfo[]
     printf("********************************************\n\n");
 }
 
-//Markov
+//*************************************************** MARKOV ****************************************************
 void Markov(){
 
     double mat[N_MAX][N_MAX];
@@ -174,6 +179,7 @@ void calcula_V(double mat[][N_MAX], double v[], int n){
 
 }
 
+//Calcula la matriz al cuadrado usando una matriz auxiliar
 void mat_cuadrada(double mat[][N_MAX],int n){
     double acum;
     double mAux[N_MAX][N_MAX];
@@ -191,6 +197,7 @@ void mat_cuadrada(double mat[][N_MAX],int n){
     }
 }
 
+//Metodo para copiar una matriz ya que en C no se pueden asignar
 void copia_matriz(double mat2[][N_MAX], double mat[][N_MAX], int n){
     for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
@@ -220,7 +227,7 @@ void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
 
     printf("Matriz de transicion:\n\n");
 
-    //mostrar matriz
+    //Mostrar matriz
     for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 printf("%6.3lf ",mat[i][j]);
@@ -228,7 +235,7 @@ void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
             printf("\n");
     }
 
-    //mostrar V*
+    //Mostrar V*
     printf("\nV*: {");
     for(int i=0; i<n; i++){
         printf("%4.3lf",v[i]);
@@ -243,6 +250,7 @@ void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
     printf("********************************************\n\n");
 }
 
+//Calcula la cantidad de informacion dada una probabilidad
 double info(double p){
     if( p != 0 )
         return log10(1/p) / log10(2);
