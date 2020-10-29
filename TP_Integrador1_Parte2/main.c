@@ -3,20 +3,20 @@
 #include "funciones.h"
 int main()
 {
-    int op;
-
     printf("CARGAR LOS ARCHIVOS ANTES DE CONTINUAR!\n\n");
-    printf("Seleccione una Opcion:\n\n");
-    printf("1) Codificacion\n");
-    printf("2) Calculos\n");
 
-    scanf("%d",&op); //Lee opcion
-    system("cls");  //Clear screen
+    char codigos[CANT_CODIGOS][LONG_MAX_CODIGO];
+    double prob[CANT_SIMBOLOS];
+    double ACalculado[CANT_SIMBOLOS];
+    int A[CANT_SIMBOLOS];
+    int n; //cantidad de simbolos
 
-    if( op == 1 )
-        Codificacion();
-    else if( op == 2 )
-        Calculos();
+    leerProbabilidades(prob,&n);
+    generaCodigos(codigos,n);
+    generaA(prob,ACalculado,A,n);
+    mostrarResultados(prob,codigos,ACalculado,A,n);
+
+    getchar();
 
     return 0;
 }

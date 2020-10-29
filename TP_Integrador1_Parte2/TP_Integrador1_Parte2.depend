@@ -13,16 +13,16 @@
 	<math.h>
 	"funciones.h"
 
-1603855266 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte2\funciones.c
+1604011470 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte2\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<math.h>
 	"funciones.h"
 
-1603854389 c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte2\funciones.h
+1604010388 c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte2\funciones.h
 
-1603854239 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte2\main.c
+1604012080 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte2\main.c
 	<stdio.h>
 	<stdlib.h>
 	"funciones.h"

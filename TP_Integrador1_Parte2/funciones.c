@@ -5,15 +5,6 @@
 #include "funciones.h"
 
 //*****************************************************************CODIFICACION*****************************************************************
-void Codificacion(){
-    char codigos[CANT_CODIGOS][LONG_MAX_CODIGO];
-    double prob[CANT_SIMBOLOS];
-    int n; //cantidad de simbolos
-
-    leerProbabilidades(prob,&n);
-    generaCodigos(codigos,n);
-    mostrarCodificacion(prob,codigos,n);
-}
 
 void leerProbabilidades(double prob[],int *n){
     FILE *arch;
@@ -48,48 +39,7 @@ void generaCodigos(char codigos[][LONG_MAX_CODIGO], int n){
     }
 }
 
-void mostrarCodificacion(double prob[], char codigos[][LONG_MAX_CODIGO], int n){
-    system("cls");
-    printf("*********************************\n");
-    printf("Si  P(Si)  Codigo\n");
-    for(int i=0;i<n;i++){
-        printf("S%d  %4.3f  %s\n",i+1,prob[i],codigos[i]);
-    }
-    printf("*********************************\n");
-}
-
 //*****************************************************************CALCULOS************************************************************************************************************
-
-void Calculos(){
-    char codigos[CANT_CODIGOS][LONG_MAX_CODIGO];
-    double prob[CANT_SIMBOLOS];
-    int n; //cantidad de simbolos
-
-    leerDatos(prob,codigos,&n);
-
-    //mostrar resultados
-    mostrarResultados(prob,codigos,n);
-
-}
-
-void leerDatos(double prob[], char codigos[][LONG_MAX_CODIGO], int *n){
-    FILE *arch;
-    int j=0;
-
-    arch = fopen("codigo.txt","rt");
-
-    if(arch == NULL){
-        printf("Archivo codigo.txt no encontrado");
-        exit(1);
-    }else{
-        while(!feof(arch)){
-            fscanf(arch,"%lf %s",prob+j,codigos[j]);
-            j++;
-        }
-        *n = j;
-    }
-    fclose(arch);
-}
 
 double longMedia(double prob[], char codigos[][LONG_MAX_CODIGO], int n){
     double longMed = 0;
@@ -120,26 +70,56 @@ int cumpleKraft(char codigos[][LONG_MAX_CODIGO], int n){
     return rta;
 }
 
-void mostrarResultados(double prob[], char codigos[][LONG_MAX_CODIGO], int n){
+void mostrarResultados(double prob[], char codigos[][LONG_MAX_CODIGO],double ACalculado[], int A[], int n){
 
-    printf("\n************ RESULTADOS ************\n");
+    printf("\n***************** RESULTADOS *****************\n");
 
-    printf("Si  P(Si)    Li    Codigo\n");
+    printf("______________________________________________\n");
+    printf("Si  P(Si)    Li   AiCalculado    Ai   Codigo\n");
+    printf("______________________________________________\n");
     for(int i=0;i<n;i++){
-        printf("S%d  %4.3f    %d     %s\n",i+1,prob[i],strlen(codigos[i]),codigos[i]);
+        printf("S%d  %4.3f    %d       %5.3f       %d    %s\n",i+1,prob[i],strlen(codigos[i]),ACalculado[i],A[i],codigos[i]);
     }
+    printf("______________________________________________\n");
 
-    printf("\nH(S) = %5.3f\n",entropia(prob,n));
-    printf("L = %5.3f\n",longMedia(prob,codigos,n));
+    printf("\n- H(S) = %5.3f\n",entropia(prob,n));
+    printf("- L = %5.3f\n",longMedia(prob,codigos,n));
 
     if(cumpleKraft(codigos,n))
-        printf("Cumple la inecuacion de Kraft\n");
+        printf("- El codigo cumple la inecuacion de Kraft\n");
     else
-        printf("No cumple la inecuacion de Kraft\n");
+        printf("- El codigo NO cumple la inecuacion de Kraft\n");
 
-    printf("es compacto?\n");
+    if ( esCompacto(codigos,A,n) )
+        printf("- El codigo es compacto\n");
+    else
+        printf("- El codigo NO es compacto\n");
 
-    printf("************************************\n\n\n");
+    printf("\n**********************************************\n\n\n");
 
 }
 
+void generaA(double prob[], double ACalculado[], int A[], int n){
+
+    for (int i=0; i<n; i++ ){
+        ACalculado[i] = ( -log10(prob[i]) / log10(2) );
+        A[i] = (int) ACalculado[i] + 1;
+    }
+
+}
+
+int esCompacto(char codigos[][LONG_MAX_CODIGO],int A[], int n){
+    //el codigo a verificar siempre es instantaneo en nuestro caso
+    //por lo tanto solo se comprueba que todos los Li <= Ai para ser compacto
+
+    int respuesta = 1, i=0;
+
+    while( i<n && strlen(codigos[i]) <= A[i] ){
+        i++;
+    }
+
+    if( i < n )
+        respuesta = 0;
+
+    return respuesta;
+}
