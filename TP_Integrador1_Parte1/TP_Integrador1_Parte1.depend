@@ -1,18 +1,20 @@
 # depslib dependency file v1.0
-1603312732 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\main.c
+1603854160 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<time.h>
 	"funciones.h"
 
-1603319870 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\funciones.c
+1603854160 source:c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<math.h>
+	<time.h>
 	"funciones.h"
 
-1603318963 c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\funciones.h
+1603854160 c:\users\july\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\funciones.h
 
 1603851513 source:c:\users\usuario\documents\github\teoria_de_la_informacion_laserna-viejo\tp_integrador1_parte1\funciones.c
 	<stdio.h>
