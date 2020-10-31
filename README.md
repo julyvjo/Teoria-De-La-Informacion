@@ -5,9 +5,9 @@ Alumnos: Lautaro Diego Laserna, Julián Dario Viejo
 IMPORTANTE: Ejempos de formato de lectura para los Archivos de Datos
 
 FUENTE DE MEMORIA NULA: Se ingresan las probabilidades en el Archivo nula.txt
-0.5
-0.3
-0.2
+    0.5
+    0.3
+    0.2
 
 FUENTE DE MARKOV: Se ingresa PRIMERO el numero de simbolos, seguido por la Matriz en el Archivo markov.txt
 3
