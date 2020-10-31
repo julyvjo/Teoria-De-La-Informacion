@@ -16,6 +16,8 @@ void MemNula(){
     CantInfo(prob,vecCantInfo,n);
     SimulacionNula(prob,probSim,n);
     mostrarResultadosNula(prob,probSim,vecCantInfo,n);
+    getchar();
+    getchar();
 }
 
 void leerMemNula(double prob[], int *n){
@@ -85,30 +87,27 @@ int simulaSimbolo(double prob[], int n){
 }
 
 void mostrarResultadosNula(double prob[], double probSim[], double vecCantInfo[], int n){
-
     printf("**************** RESULTADOS ****************\n");
-
     printf("Si       P(Si)        P(Sim)       I(Si)\n");
     for(int i=0; i<n; i++){
 
         printf("S%d  %12.5f %12.5f %12.5f\n",i+1,prob[i],probSim[i],vecCantInfo[i]);
     }
     printf("\nH(s)=%6.3f\n",entropiaNula(prob,vecCantInfo,n));
-
     printf("********************************************\n\n");
 }
 
 //*************************************************** MARKOV ****************************************************
 void Markov(){
-
     double mat[N_MAX][N_MAX];
     double v[N_MAX];
     int n;
 
     leerMarkov(mat,&n);
     calcula_V(mat,v,n);
-
     mostrarResultadosMarkov(mat,v,n);
+    getchar();
+    getchar();
 }
 
 void leerMarkov(double mat[][N_MAX], int *n){
@@ -191,11 +190,8 @@ double entropiaMarkov(double mat[][N_MAX], double v[N_MAX], int n){
 }
 
 void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
-
     printf("**************** RESULTADOS ****************\n");
-
     printf("Matriz de transicion:\n");
-
     //Mostrar matriz
     for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
@@ -203,7 +199,6 @@ void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
             }
             printf("\n");
     }
-
     //Mostrar V*
     printf("\nV*: {");
     for(int i=0; i<n; i++){
@@ -212,10 +207,7 @@ void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
             printf(", ");
     }
     printf("}\n");
-
-
     printf("\nH(s) =%6.3f\n",entropiaMarkov(mat,v,n));
-
     printf("********************************************\n\n");
 }
 
@@ -226,19 +218,3 @@ double info(double p){
     else
         return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
