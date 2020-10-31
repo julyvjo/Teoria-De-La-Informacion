@@ -9,7 +9,7 @@ int main()
     int op;
     srand(time(NULL));
 
-    printf("CARGAR LOS ARCHIVOS ANTES DE CONTINUAR!\n\n");
+    printf("CARGAR LOS ARCHIVOS ANTES DE CONTINUAR!(Leer README)\n\n");
     printf("Seleccione un tipo de Fuente:\n\n");
     printf("1) Memoria Nula\n");
     printf("2) Markov\n");
