@@ -3,13 +3,13 @@
 #include "funciones.h"
 int main()
 {
-    printf("CARGAR LOS ARCHIVOS ANTES DE CONTINUAR!\n\n");
+    printf("CARGAR EL ARCHIVO ANTES DE CONTINUAR! (Leer README)\n\n");
 
     char codigos[CANT_CODIGOS][LONG_MAX_CODIGO];
     double prob[CANT_SIMBOLOS];
     double ACalculado[CANT_SIMBOLOS];
     int A[CANT_SIMBOLOS];
-    int n; //cantidad de simbolos
+    int n; //Cantidad de simbolos
 
     leerProbabilidades(prob,&n);
     generaCodigos(codigos,n);

@@ -10,23 +10,14 @@ void MemNula(){
     double prob[N_MAX];
     double vecCantInfo[N_MAX];
     double probSim[N_MAX] = {0};
-    int ext[10] = {0,1,2,3,4,5,6,7,8,9};
-    int n=0,k=0;
+    int n=0;
 
     leerMemNula(prob,&n);
     CantInfo(prob,vecCantInfo,n);
     SimulacionNula(prob,probSim,n);
     mostrarResultadosNula(prob,probSim,vecCantInfo,n);
-
-    printf("Desea calcular extension? Ingrese el orden de la extension (0 para cancelar): ");
-    scanf("%d",&k);
-
-    if( 0 < k && k < 11){
-        printf("\nEXTENSION DE GRADO %d:\n\n",k);
-        printf("S^%di         P(S^%di)       I(S^%di)\n",k,k,k);
-        Extension(ext,prob,n,0,k);
-        printf("\nH(S^%d) = %lf\n",k,entropiaNula(prob,vecCantInfo,n)*k);
-    }
+    getchar();
+    getchar();
 }
 
 void leerMemNula(double prob[], int *n){
@@ -66,29 +57,7 @@ double entropiaNula(double prob[], double vecCantInfo[], int n){
     return e;
 }
 
-//Metodo recursivo para mostrar la extension de una fuente
-void Extension(int ext[], double prob[], int n, int h, int k){
-    if(h==k){ //caso llegado al final de la recursividad
-        double cantInfo = 1, probabilidad = 1;
-        for(int i=0; i<k; i++) //calcula la cantidad de informacion
-            cantInfo *= prob[ ext[i]-1 ]; //es -1 porque como en el else sumamos 1 esta desfasado
-        probabilidad = cantInfo; //en este punto cantinfo tiene el valor de la probabilidad
-        cantInfo = ( log10(1/cantInfo) / log10(2) );
-
-        for(int i=0; i<k; i++){
-            printf("S%d",ext[i]);
-        }
-        printf("%14.3f",probabilidad);
-        printf("%14.3f \n",cantInfo);
-
-    }else{
-        for(int i=0; i<n; i++){
-            ext[h] = i+1; //es +1 para que los simbolos no empiecen en cero, nada mas
-            Extension(ext,prob,n,h+1,k);
-        }
-    }
-}
-
+//Realiza una simulacion segun la distribucion de probabilidades ingresada
 void SimulacionNula(double prob[], double probSim[], int n){
     int tope, pos;
 
@@ -106,11 +75,11 @@ void SimulacionNula(double prob[], double probSim[], int n){
 
 //Crea un simbolo random y retorna su posicion segun la dist de probabilidades
 int simulaSimbolo(double prob[], int n){
-    double p = (double)(rand() % 1000 + 1)/1000;
+    double p = (double)(rand() % 1000 + 1)/1000; //Numero random entre 0 y 1
     double acum = prob[0];
     int i = 0;
 
-    while(p > acum && i < n){
+    while(p > acum && i < n){ //Sale del ciclo cuando el numero random es mayor que la probabilidad acumulada
         i++;
         acum += prob[i];
     }
@@ -118,30 +87,27 @@ int simulaSimbolo(double prob[], int n){
 }
 
 void mostrarResultadosNula(double prob[], double probSim[], double vecCantInfo[], int n){
-
     printf("**************** RESULTADOS ****************\n");
-
     printf("Si       P(Si)        P(Sim)       I(Si)\n");
     for(int i=0; i<n; i++){
 
-        printf("S%d: %12.5f %12.5f %12.5f\n",i+1,prob[i],probSim[i],vecCantInfo[i]);
+        printf("S%d  %12.5f %12.5f %12.5f\n",i+1,prob[i],probSim[i],vecCantInfo[i]);
     }
     printf("\nH(s)=%6.3f\n",entropiaNula(prob,vecCantInfo,n));
-
     printf("********************************************\n\n");
 }
 
 //*************************************************** MARKOV ****************************************************
 void Markov(){
-
     double mat[N_MAX][N_MAX];
     double v[N_MAX];
     int n;
 
     leerMarkov(mat,&n);
     calcula_V(mat,v,n);
-
     mostrarResultadosMarkov(mat,v,n);
+    getchar();
+    getchar();
 }
 
 void leerMarkov(double mat[][N_MAX], int *n){
@@ -165,6 +131,7 @@ void leerMarkov(double mat[][N_MAX], int *n){
     fclose(arch);
 }
 
+//Calcula el vector estacionario de una matriz de transicion por medio de ITERACIONES
 void calcula_V(double mat[][N_MAX], double v[], int n){
     double mAux[N_MAX][N_MAX];
 
@@ -174,7 +141,7 @@ void calcula_V(double mat[][N_MAX], double v[], int n){
         mat_cuadrada(mAux,n);
     }
 
-    for(int i=0; i<n; i++)
+    for(int i=0; i<n; i++) //Asigna a cada pos de V* su valor correspondiente tomando la primera columna de la matriz
         v[i] = mAux[i][1];
 
 }
@@ -207,34 +174,31 @@ void copia_matriz(double mat2[][N_MAX], double mat[][N_MAX], int n){
 
 }
 
+//Calcula la entropia en una fuente de MARKOV
 double entropiaMarkov(double mat[][N_MAX], double v[N_MAX], int n){
     double entropia = 0, auxColumna = 0; //auxColumna es la sumatoria de la columna
 
     for(int j=0; j<n; j++){
             auxColumna = 0;
             for(int i=0; i<n; i++){
-                auxColumna += mat[i][j] * info(mat[i][j]);
+                auxColumna += mat[i][j] * info(mat[i][j]); //Sumatoria por COLUMNA
             }
-        entropia += v[j] * auxColumna;
+        entropia += v[j] * auxColumna; //Sumatoria de V* multiplicado por la entropía por columna
     }
 
     return entropia;
 }
 
 void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
-
     printf("**************** RESULTADOS ****************\n");
-
-    printf("Matriz de transicion:\n\n");
-
+    printf("Matriz de transicion:\n");
     //Mostrar matriz
     for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
-                printf("%6.3lf ",mat[i][j]);
+                printf("%6.3f ",mat[i][j]);
             }
             printf("\n");
     }
-
     //Mostrar V*
     printf("\nV*: {");
     for(int i=0; i<n; i++){
@@ -243,33 +207,14 @@ void mostrarResultadosMarkov(double mat[][N_MAX], double v[N_MAX], int n){
             printf(", ");
     }
     printf("}\n");
-
-
     printf("\nH(s) =%6.3f\n",entropiaMarkov(mat,v,n));
-
     printf("********************************************\n\n");
 }
 
 //Calcula la cantidad de informacion dada una probabilidad
 double info(double p){
-    if( p != 0 )
+    if( p != 0 ) //Verifica que p != 0 para no tener conflictos con la matriz de transicion
         return log10(1/p) / log10(2);
     else
         return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
