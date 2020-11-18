@@ -6,6 +6,15 @@ public class HuffmanStruct {
 	
 	
 	
+	public void agregarALista() {
+		
+	}
+	
+	public void formarArbol() {
+		
+	}
+	
+	
 	
 	
 	
