@@ -7,7 +7,7 @@ public class main {
 
 	public static void main(String[] args) {
 		
-		//comentario de july
+		//comentario de lau
 		//leer un txt y a partir de eso obtener los simbolos con sus probabilidades
 		Fuente fuente1 = new Fuente();
 		
