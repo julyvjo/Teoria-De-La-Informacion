@@ -14,7 +14,6 @@ public class main {
 		try {
 			fuente1.leerFuenteTXT("fuente.txt");
 			fuente2.leerFuenteTXT("fuente.txt");
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -22,7 +21,11 @@ public class main {
 		fuente1.codificarHuffman();
 		fuente1.codificarShannonFano();
 		fuente1.mostrarFuente();
-
+		try {
+			System.out.println("RLC: " + fuente1.generaRLC("fuente.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		//Calculos
 		//Mostrar resultados
 	}
