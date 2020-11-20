@@ -19,9 +19,11 @@ public class main {
 			e.printStackTrace();
 		}
 
-		fuente1.mostrarFuente();
-
 		fuente1.codificarHuffman();
+		fuente1.mostrarFuente();
+		fuente1.codificarShannonFano();
+		
+		fuente1.mostrarFuente();
 
 		// una vez obtenida la estructura simbolo-probabilidad codificar para huffman,
 		// shanon-fano y RLC (para ambas fuentes)
