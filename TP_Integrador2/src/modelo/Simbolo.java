@@ -1,14 +1,14 @@
 package modelo;
 
-public class Simbolo{
-	
+public class Simbolo {
+
 	Character c;
 	double probabilidad;
 	String codHuffman;
 	String codShannonFano;
-	
+
 	public Simbolo(char c, double probabilidad) {
-		
+
 		this.c = c;
 		this.probabilidad = probabilidad;
 		this.codHuffman = "";
@@ -46,7 +46,5 @@ public class Simbolo{
 	public void setCodShannonFano(String codShannonFano) {
 		this.codShannonFano = codShannonFano;
 	}
-	
-	
-	
+
 }

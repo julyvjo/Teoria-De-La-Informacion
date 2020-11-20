@@ -16,146 +16,91 @@ import java.util.TreeSet;
 public class Fuente {
 
 	TreeMap<Character, Simbolo> simbolos = new TreeMap<Character, Simbolo>();
-	
 
 	public void leerFuenteTXT(String nombreArchivo) throws FileNotFoundException {
-		
 		Character c;
-		//Fuente fuente = new Fuente();
 		HashMap<Character, Integer> acum = new HashMap<Character, Integer>();
-		int total = 0; //total de caracteres en el texto (se usa para sacar las probabilidades haciendo acum(simbolo) / total
-		
-		//lectura de txt
-		BufferedReader br = new BufferedReader( new FileReader(nombreArchivo) );
+		int total = 0; // total de caracteres en el texto
+
+		// lectura de txt
+		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
 		int h;
 		boolean isEnter = false;
-		
 		try {
-	
-			while( ( h = br.read() ) != -1 ) {
-				
-				if( !isEnter ) {
-					
-					if( h == 13 ) {
-						
-						h = 187; //cambiamos el "new line" por "UTF BB"
+			while ((h = br.read()) != -1) {
+				if (!isEnter) {
+					if (h == 13) {
+						h = 187; // cambiamos el "new line" por "UTF BB"
 						isEnter = true;
 					}
-					
 					c = (char) h;
-					
-					if(acum.containsKey(c)) { //contiene el caracter
-						
-						acum.put(c, acum.get(c)+1);
-						
-					}else { //no lo contiene
-						
+					if (acum.containsKey(c)) { // contiene el caracter
+						acum.put(c, acum.get(c) + 1);
+					} else { // no lo contiene
 						acum.put(c, 1);
 					}
-					
-					total +=1;
-					
-				}else {
-					
+					total += 1;
+				} else {
 					isEnter = false;
-					
 				}
-				
-				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		for (HashMap.Entry<Character, Integer> entry : acum.entrySet()) { //toma el hashmap, lo recorre y con sus datos crea los simbolos dentro de la fuente
-			
-		    Character car = entry.getKey();
-		    Integer i = entry.getValue();
-		    
-		    this.simbolos.put(car, new Simbolo(car, (double) i/total));
-		  
-		}
-		
-	}
-	
-	
-	public void mostrarFuente() {
-		
-		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
-		    Character car = entry.getKey();
-		    Simbolo s = entry.getValue();
-		    
-		    System.out.println(car + " " + s.probabilidad);
+		for (HashMap.Entry<Character, Integer> entry : acum.entrySet()) { // recorre el hashmap
+			Character car = entry.getKey();
+			Integer i = entry.getValue();
+			this.simbolos.put(car, new Simbolo(car, (double) i / total));
 		}
 	}
 
-	
-	
+	public void mostrarFuente() {
+
+		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
+			Character car = entry.getKey();
+			Simbolo s = entry.getValue();
+
+			System.out.println("'" + car + "' " + s.probabilidad);
+		}
+	}
+
 	public void codificarHuffman() {
 		TreeSet<NodoHuffman> lista = new TreeSet<NodoHuffman>();
-		
 		//crea lista
 		lista = this.creaListaHuffman();
-		
 		//crea arbol
-		lista =  this.creaArbolHuffman(lista);
-		
-		System.out.println(lista.first().getProb()); //1
-		System.out.println(lista.first().getDer().getCaracter()); //A
-		System.out.println(lista.first().getIzq().getIzq().getCaracter()); //C
-		System.out.println(lista.first().getIzq().getDer().getCaracter()); //B
-		
-		
+		lista = this.creaArbolHuffman(lista);
 		//crea codigos
-		//this.creaCodigoHuffman(lista);
-		
-		
+		this.creaCodigoHuffman(lista);
 	}
-	
+
 	private TreeSet<NodoHuffman> creaListaHuffman() {
 		TreeSet<NodoHuffman> lista = new TreeSet<NodoHuffman>();
-		
+
 		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
-		    Character car = entry.getKey();
-		    Simbolo s = entry.getValue();
-		    
-		    lista.add(new NodoHuffman(s.getProbabilidad(),s.getCaracter()) );
+			Character car = entry.getKey();
+			Simbolo s = entry.getValue();
+			lista.add(new NodoHuffman(s.getProbabilidad(), s.getCaracter()));
 		}
-		
+
 		return lista;
 	}
-	
+
 	private TreeSet<NodoHuffman> creaArbolHuffman(TreeSet<NodoHuffman> lista) {
-		NodoHuffman primero,segundo,nuevo;
-		
-		
-		while( 1 < lista.size() ) {
-			
-			System.out.println("Size = " + lista.size());
-			/*
-			primero = new NodoHuffman(lista.first().getProb(),lista.first().getCaracter());
-			lista.remove(lista.first());
-			segundo = new NodoHuffman(lista.first().getProb(),lista.first().getCaracter());
-			lista.remove(lista.first());
-			
-			nuevo = new NodoHuffman(primero.getProb()+segundo.getProb(), primero, segundo);
-			
-			System.out.println("nuevo = " + nuevo.getProb());
+		NodoHuffman primero, segundo, nuevo;
+
+		while (lista.size() > 1) {
+			primero = lista.pollFirst();
+			segundo = lista.pollFirst();
+			nuevo = new NodoHuffman(primero.getProb() + segundo.getProb(), primero, segundo);
 			
 			lista.add(nuevo);
-			*/
-			
-			
-			
-			System.out.println("Size = " + lista.size());
 		}
-		
 		return lista;
 	}
-	
+
 	private void creaCodigoHuffman(TreeSet<NodoHuffman> lista) {
 		
 	}
-	
-	
+
 }
