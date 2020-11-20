@@ -4,10 +4,10 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 
 public class main {
-
+	
 	public static void main(String[] args) {
 
-		// leer un txt y a partir de eso obtener los simbolos con sus probabilidades
+		//Leer un txt y a partir de eso obtener los simbolos con sus probabilidades
 		Fuente fuente1 = new Fuente();
 		Fuente fuente2 = new Fuente();
 
@@ -21,16 +21,9 @@ public class main {
 
 		fuente1.codificarHuffman();
 		fuente1.codificarShannonFano();
-		
 		fuente1.mostrarFuente();
 
-		// una vez obtenida la estructura simbolo-probabilidad codificar para huffman,
-		// shanon-fano y RLC (para ambas fuentes)
-
-		// calculos
-
-		// mostrar resultados
-
+		//Calculos
+		//Mostrar resultados
 	}
-
 }
