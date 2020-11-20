@@ -60,7 +60,7 @@ public class Fuente {
 			Character car = entry.getKey();
 			Simbolo s = entry.getValue();
 
-			System.out.println("'" + car + "' " + s.probabilidad + " huff: " + s.getCodHuffman() + "SF: " + s.getCodShannonFano());
+			System.out.println("'" + car + "' " + s.probabilidad + " huff: " + s.getCodHuffman() + "    SF: " + s.getCodShannonFano());
 		}
 	}
 
@@ -120,7 +120,7 @@ public class Fuente {
 	//---------------------------------------------------------------------------------------------SHANNON-FANO
 	
 	public void codificarShannonFano() {
-		TreeSet<Simbolo> lista = new TreeSet<Simbolo>();
+		TreeSet<NodoSF> lista = new TreeSet<NodoSF>();
 	
 		//crear lista
 		lista = this.creaListaShannonFano();
@@ -129,46 +129,67 @@ public class Fuente {
 		this.creaCodigoShannonFano(lista);
 	}
 	
-	private TreeSet<Simbolo> creaListaShannonFano() {
-		TreeSet<Simbolo> lista = new TreeSet<Simbolo>();
+	private TreeSet<NodoSF> creaListaShannonFano() {
+		TreeSet<NodoSF> lista = new TreeSet<NodoSF>();
 
 		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
-			Character car = entry.getKey();
 			Simbolo s = entry.getValue();
-			lista.add( new Simbolo( s.getCaracter(), s.getProbabilidad()) );
+			
+			lista.add( new NodoSF( s.getCaracter(), s.getProbabilidad()) );
 		}
 
 		return lista;
 	}
 	
-	private void creaCodigoShannonFano(TreeSet<Simbolo> lista) {
+	private void creaCodigoShannonFano(TreeSet<NodoSF> lista) {
 		double probAcum = 0;
 		double probTotal = 0;
-		TreeSet<Simbolo> lista2 = new TreeSet<Simbolo>();
+		TreeSet<NodoSF> lista2 = new TreeSet<NodoSF>();
 		
 		if( 1 < lista.size() ) {
-		
-			Iterator<Simbolo> it = lista.iterator();
+			
+			Iterator<NodoSF> it = lista.iterator();
+			
 			while( it.hasNext() ) {
-				Simbolo s = it.next();
 				
-				probTotal += s.getProbabilidad();
+				NodoSF nodo = it.next();
+				probTotal += nodo.getProbabilidad();
 			}
 			
-			Iterator<Simbolo> it2 = lista.iterator();
+			
+			
+			
+			
+			
+			
+			
+			int cont = 0;
+			Iterator<NodoSF> it2 = lista.iterator();
 			while( it2.hasNext() ) {
 				
-				Simbolo s = it.next();
-				if( probAcum + s.getProbabilidad() <= (probTotal/2) ) {
+				NodoSF nodo2 = it2.next();
+				if( !this.esMasCercanoALaMitad(probTotal, probAcum, nodo2.getProbabilidad()) && cont < lista.size()-1 ) {
 					
-					probAcum += s.getProbabilidad();
-					s.setCodShannonFano(s.getCodShannonFano() + "1");
-					lista2.add(lista.pollFirst());
-				}else {
-					s.setCodShannonFano(s.getCodShannonFano() + "0");
+					probAcum += nodo2.getProbabilidad();
+					cont += 1;					
 				}
-				
 			}
+			
+			for( int i = 0; i<cont; i++ ) {
+				
+				NodoSF nuevo = lista.pollFirst();
+				nuevo.setCodigoSF(nuevo.getCodigoSF() + "1");
+				lista2.add(nuevo);
+			}
+			
+			Iterator<NodoSF> it3 = lista.iterator();
+			while( it3.hasNext() ) {
+				
+				NodoSF nodo3 = it3.next();
+				
+				nodo3.setCodigoSF(nodo3.getCodigoSF() + "0");
+			}
+			
 			
 			this.creaCodigoShannonFano(lista);
 			this.creaCodigoShannonFano(lista2);
@@ -176,12 +197,19 @@ public class Fuente {
 		}else {
 			
 			Simbolo s = this.simbolos.get(lista.first().getCaracter());
-			s.setCodShannonFano( lista.first().getCodShannonFano() );
+			s.setCodShannonFano( lista.first().getCodigoSF() );
 			
 		}
 	
 	}
 	
-	
+	private boolean esMasCercanoALaMitad(double probTotal, double probAcum, double probAct) { //true mete el actual
+		boolean respuesta = false;
+		
+		 if( Math.abs( (probAcum - probTotal/2) ) <= Math.abs( (probAcum+probAct - probTotal/2) ) )
+		 	respuesta = true;	
+		
+		return respuesta;
+	}
 	
 }

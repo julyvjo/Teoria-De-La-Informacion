@@ -20,7 +20,6 @@ public class main {
 		}
 
 		fuente1.codificarHuffman();
-		fuente1.mostrarFuente();
 		fuente1.codificarShannonFano();
 		
 		fuente1.mostrarFuente();
