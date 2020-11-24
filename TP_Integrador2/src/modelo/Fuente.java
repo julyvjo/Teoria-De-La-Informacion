@@ -21,7 +21,7 @@ public class Fuente {
 		HashMap<Character, Integer> acum = new HashMap<Character, Integer>();
 		int total = 0; // total de caracteres en el texto
 
-		//Lectura de txt
+		// Lectura de txt
 		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
 		int h;
 		boolean isEnter = false;
@@ -52,26 +52,28 @@ public class Fuente {
 			this.simbolos.put(car, new Simbolo(car, (double) i / total));
 		}
 	}
-	
+
 	public void set_tasa_compresion_RLC(double n) {
 		this.tasa_compresion_RLC = n;
 	}
-	
+
 	public double get_tasa_compresion_RLC() {
 		return this.tasa_compresion_RLC;
 	}
 
 	public void mostrarFuente() {
 		DecimalFormat df = new DecimalFormat("0.000");
+		System.out.println("----------------- PARTE 1 ------------------");
 		System.out.println("____________________________________________");
 		System.out.println("Si  P(Si)       Huffman         Shannon-Fano");
 		System.out.println("____________________________________________");
 		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
 			Character car = entry.getKey();
 			Simbolo s = entry.getValue();
-			System.out.println(car + "   " + df.format(s.probabilidad) + "\t" + s.getCodHuffman() + "\t\t" + s.getCodShannonFano());
+			System.out.println(car + "   " + df.format(s.probabilidad) + "\t" + s.getCodHuffman() + "\t\t"
+					+ s.getCodShannonFano());
 		}
-		System.out.println("____________________________________________");
+		System.out.println("____________________________________________\n");
 		try {
 			System.out.println("RLC: " + this.generaRLC("fuente.txt"));
 			System.out.println("Tasa de compresión: " + df.format(this.get_tasa_compresion_RLC()) + " : 1");
@@ -86,6 +88,7 @@ public class Fuente {
 		System.out.println("SHANNON-FANO:");
 		System.out.println("   Rendimiento: " + df.format(this.rendimiento("shannonfano")));
 		System.out.println("   Redundancia: " + df.format(this.redundancia("shannonfano")));
+		System.out.println();
 	}
 
 // ---------------------------------------------------------------------------------------------------------HUFFMAN
@@ -141,10 +144,10 @@ public class Fuente {
 
 	public void codificarShannonFano() {
 		TreeSet<NodoSF> lista = new TreeSet<NodoSF>();
-		//Crear lista
+		// Crear lista
 		lista = this.creaListaShannonFano();
-		//Crea codigo
-		this.creaCodigoShannonFano(lista,1);
+		// Crea codigo
+		this.creaCodigoShannonFano(lista, 1);
 	}
 
 	private TreeSet<NodoSF> creaListaShannonFano() {
@@ -164,28 +167,28 @@ public class Fuente {
 
 		if (1 < lista.size()) {
 			NodoSF nodo = lista.first();
-			while(!this.esMasCercanoALaMitad(probTotal, probAcum, nodo.getProbabilidad()) && lista.size() > 1){
+			while (!this.esMasCercanoALaMitad(probTotal, probAcum, nodo.getProbabilidad()) && lista.size() > 1) {
 				probAcum += nodo.getProbabilidad();
 				nodo = lista.pollFirst();
 				nodo.setCodigoSF(nodo.getCodigoSF() + "1");
 				listaAux.add(nodo);
 				nodo = lista.first();
 			}
-	
+
 			Iterator<NodoSF> it = lista.iterator();
 			while (it.hasNext()) {
 				NodoSF nodoAux = it.next();
 				nodoAux.setCodigoSF(nodoAux.getCodigoSF() + "0");
 			}
-			this.creaCodigoShannonFano(lista,probTotal-probAcum);
-			this.creaCodigoShannonFano(listaAux,probAcum);
+			this.creaCodigoShannonFano(lista, probTotal - probAcum);
+			this.creaCodigoShannonFano(listaAux, probAcum);
 
 		} else {
 			Simbolo s = this.simbolos.get(lista.first().getCaracter());
 			s.setCodShannonFano(lista.first().getCodigoSF());
 		}
 	}
-	
+
 	private boolean esMasCercanoALaMitad(double probTotal, double probAcum, double probAct) { // true mete el actual
 		boolean respuesta = false;
 
@@ -194,22 +197,23 @@ public class Fuente {
 
 		return respuesta;
 	}
+
 //--------------------------------------------------------------------------------------------------------------------RLC
 	public String generaRLC(String nombreArchivo) throws FileNotFoundException {
-		int h, cont = 1; //Cuenta la cantidad de caracteres repetidos
-		
+		int h, cont = 1; // Cuenta la cantidad de caracteres repetidos
+
 		int tamanio_original = 0;
 		int tamanio_RLC = 0;
-		
+
 		StringBuilder RLC = new StringBuilder();
 		Character c, cAct = null;
-		
-		//Lectura de txt
+
+		// Lectura de txt
 		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
 		boolean isEnter = false;
 		try {
 			while ((h = br.read()) != -1) {
-				
+
 				if (!isEnter) {
 					tamanio_original += 1;
 					if (h == 13) {
@@ -217,10 +221,10 @@ public class Fuente {
 						isEnter = true;
 					}
 					c = (char) h;
-					if(c == cAct) {
+					if (c == cAct) {
 						cont++;
-					}else {
-						if(cAct!= null) {
+					} else {
+						if (cAct != null) {
 							String s = Character.toString(cAct) + Integer.toString(cont);
 							RLC.append(s);
 							tamanio_RLC += 2;
@@ -228,7 +232,7 @@ public class Fuente {
 						cAct = c;
 						cont = 1;
 					}
-				}else {
+				} else {
 					isEnter = false;
 				}
 			}
@@ -237,61 +241,44 @@ public class Fuente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.set_tasa_compresion_RLC( (double) tamanio_original / tamanio_RLC );
-		
+		this.set_tasa_compresion_RLC((double) tamanio_original / tamanio_RLC);
+
 		return RLC.toString();
 	}
-	
-	//-------------------------------------------------------------------------------------------------------------------- Cálculos
-	
-	public double entropía() {
+
+//---------------------------------------------------------------------------------------------------------------------CALCULOS
+	public double entropia() {
 		double entropia = 0;
-		
+
 		for (Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
 			Simbolo s = entry.getValue();
-			
-				entropia += s.getProbabilidad() * s.getCantidadDeInformacion();
+
+			entropia += s.getProbabilidad() * s.getCantidadDeInformacion();
 		}
-		
 		return entropia;
 	}
-	
+
 	public double longitudMedia(String codigo) {
 		double longmedia = 0;
 
 		for (Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
 			Simbolo s = entry.getValue();
-			
-			if( codigo == "huffman" ) {
+
+			if (codigo == "huffman") {
 				longmedia += s.getCodHuffman().length() * s.getProbabilidad();
-			}else if( codigo == "shannonfano" ){
+			} else if (codigo == "shannonfano") {
 				longmedia += s.getCodShannonFano().length() * s.getProbabilidad();
 			}
 		}
-		
 		return longmedia;
 	}
-	
+
 	public double redundancia(String codigo) {
-		
-		return 1-this.rendimiento(codigo);
+		return 1 - this.rendimiento(codigo);
 	}
-	
+
 	public double rendimiento(String codigo) {
-		
-		return this.entropía()/this.longitudMedia(codigo);
+		return this.entropia() / this.longitudMedia(codigo);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
