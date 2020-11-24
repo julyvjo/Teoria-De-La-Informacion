@@ -27,6 +27,11 @@ public class main {
 			e.printStackTrace();
 		}
 		//Calculos
+		
+		System.out.println("ENTROPIA LONG MEDIA HUFFMAN LONG MEDIA SHANNONFANO");
+		System.out.println(fuente1.entropía());
+		System.out.println(fuente1.longitudMedia("huffman"));
+		System.out.println(fuente1.longitudMedia("shannonfano"));
 		//Mostrar resultados
 	}
 }

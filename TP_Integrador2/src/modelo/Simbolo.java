@@ -46,5 +46,9 @@ public class Simbolo {
 	public void setCodShannonFano(String codShannonFano) {
 		this.codShannonFano = codShannonFano;
 	}
+	
+	public double getCantidadDeInformacion() {
+		return -(Math.log10(this.getProbabilidad()) / Math.log10(2) );
+	}
 
 }

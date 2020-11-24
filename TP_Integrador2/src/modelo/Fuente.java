@@ -1,22 +1,20 @@
 package modelo;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Scanner;
-import java.util.SortedSet;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Fuente {
 
 	TreeMap<Character, Simbolo> simbolos = new TreeMap<Character, Simbolo>();
+	double tasa_compresion_RLC = 0;
 
 	public void leerFuenteTXT(String nombreArchivo) throws FileNotFoundException {
 		Character c;
@@ -54,6 +52,14 @@ public class Fuente {
 			this.simbolos.put(car, new Simbolo(car, (double) i / total));
 		}
 	}
+	
+	public void set_tasa_compresion_RLC(double n) {
+		this.tasa_compresion_RLC = n;
+	}
+	
+	public double get_tasa_compresion_RLC() {
+		return this.tasa_compresion_RLC;
+	}
 
 	public void mostrarFuente() {
 		DecimalFormat df = new DecimalFormat("0.000");
@@ -84,7 +90,7 @@ public class Fuente {
 		TreeSet<NodoHuffman> lista = new TreeSet<NodoHuffman>();
 
 		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
-			Character car = entry.getKey();
+
 			Simbolo s = entry.getValue();
 			lista.add(new NodoHuffman(s.getProbabilidad(), s.getCaracter()));
 		}
@@ -178,6 +184,10 @@ public class Fuente {
 //--------------------------------------------------------------------------------------------------------------------RLC
 	public String generaRLC(String nombreArchivo) throws FileNotFoundException {
 		int h, cont = 1; //Cuenta la cantidad de caracteres repetidos
+		
+		int tamanio_original = 0;
+		int tamanio_RLC = 0;
+		
 		StringBuilder RLC = new StringBuilder();
 		Character c, cAct = null;
 		
@@ -186,7 +196,9 @@ public class Fuente {
 		boolean isEnter = false;
 		try {
 			while ((h = br.read()) != -1) {
+				
 				if (!isEnter) {
+					tamanio_original += 1;
 					if (h == 13) {
 						h = 126; // cambiamos el "new line" por "UTF 126"
 						isEnter = true;
@@ -198,6 +210,7 @@ public class Fuente {
 						if(cAct!= null) {
 							String s = Character.toString(cAct) + Integer.toString(cont);
 							RLC.append(s);
+							tamanio_RLC += 2;
 						}
 						cAct = c;
 						cont = 1;
@@ -211,6 +224,61 @@ public class Fuente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.set_tasa_compresion_RLC( (double) tamanio_original / tamanio_RLC );
+		
 		return RLC.toString();
 	}
+	
+	//-------------------------------------------------------------------------------------------------------------------- Cálculos
+	
+	public double entropía() {
+		double entropia = 0;
+		
+		for (Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
+			Simbolo s = entry.getValue();
+			
+				entropia += s.getProbabilidad() * s.getCantidadDeInformacion();
+		}
+		
+		return entropia;
+	}
+	
+	public double longitudMedia(String codigo) {
+		double longmedia = 0;
+
+		for (Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
+			Simbolo s = entry.getValue();
+			
+			if( codigo == "huffman" ) {
+				longmedia += s.getCodHuffman().length() * s.getProbabilidad();
+			}else if( codigo == "shannonfano" ){
+				longmedia += s.getCodShannonFano().length() * s.getProbabilidad();
+			}
+		}
+		
+		return longmedia;
+	}
+	
+	public double redundancia(String codigo) {
+		
+		return 1-this.rendimiento(codigo);
+	}
+	
+	public double rendimiento(String codigo) {
+		
+		return this.entropía()/this.longitudMedia(codigo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
