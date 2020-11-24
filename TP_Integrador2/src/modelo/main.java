@@ -21,17 +21,6 @@ public class main {
 		fuente1.codificarHuffman();
 		fuente1.codificarShannonFano();
 		fuente1.mostrarFuente();
-		try {
-			System.out.println("RLC: " + fuente1.generaRLC("fuente.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		//Calculos
 		
-		System.out.println("ENTROPIA LONG MEDIA HUFFMAN LONG MEDIA SHANNONFANO");
-		System.out.println(fuente1.entropía());
-		System.out.println(fuente1.longitudMedia("huffman"));
-		System.out.println(fuente1.longitudMedia("shannonfano"));
-		//Mostrar resultados
 	}
 }

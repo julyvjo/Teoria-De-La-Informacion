@@ -72,7 +72,20 @@ public class Fuente {
 			System.out.println(car + "   " + df.format(s.probabilidad) + "\t" + s.getCodHuffman() + "\t\t" + s.getCodShannonFano());
 		}
 		System.out.println("____________________________________________");
+		try {
+			System.out.println("RLC: " + this.generaRLC("fuente.txt"));
+			System.out.println("Tasa de compresión: " + df.format(this.get_tasa_compresion_RLC()) + " : 1");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		System.out.println();
+		System.out.println("HUFFMAN:");
+		System.out.println("   Rendimiento: " + df.format(this.rendimiento("huffman")));
+		System.out.println("   Redundancia: " + df.format(this.redundancia("huffman")));
+		System.out.println();
+		System.out.println("SHANNON-FANO:");
+		System.out.println("   Rendimiento: " + df.format(this.rendimiento("shannonfano")));
+		System.out.println("   Redundancia: " + df.format(this.redundancia("shannonfano")));
 	}
 
 // ---------------------------------------------------------------------------------------------------------HUFFMAN
