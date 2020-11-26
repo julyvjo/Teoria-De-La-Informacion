@@ -8,19 +8,22 @@ public class main {
 	public static void main(String[] args) {
 		
 		//-----------------------------------------PARTE 1-----------------------------------------
-		Fuente fuente1 = new Fuente();
-		Fuente fuente2 = new Fuente(); 
+		Fuente fuenteEspañol = new Fuente();
+		Fuente fuenteSueco = new Fuente(); 
 		
 		try {
-			fuente1.leerFuenteTXT("fuente.txt");
-			fuente2.leerFuenteTXT("fuente.txt");
+			fuenteEspañol.leerFuenteTXT("mdp-español.txt");
+			fuenteSueco.leerFuenteTXT("mdp-sueco.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		fuente1.codificarHuffman();
-		fuente1.codificarShannonFano();
-		fuente1.mostrarFuente();
+		fuenteEspañol.codificarHuffman();
+		fuenteEspañol.codificarShannonFano();
+		//fuenteEspañol.mostrarFuente("mdp-español.txt");
+		fuenteSueco.codificarHuffman();
+		fuenteSueco.codificarShannonFano();
+		//fuenteSueco.mostrarFuente("mdp-sueco.txt");
 		
 		//-----------------------------------------PARTE 2-----------------------------------------
 		

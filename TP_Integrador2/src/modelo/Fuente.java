@@ -14,12 +14,12 @@ import java.util.TreeSet;
 public class Fuente {
 
 	TreeMap<Character, Simbolo> simbolos = new TreeMap<Character, Simbolo>();
-	double tasa_compresion_RLC = 0;
+	int cantSimbolos = 0;
+	double tasaCompresionRLC = 0;
 
 	public void leerFuenteTXT(String nombreArchivo) throws FileNotFoundException {
 		Character c;
 		HashMap<Character, Integer> acum = new HashMap<Character, Integer>();
-		int total = 0; // total de caracteres en el texto
 
 		// Lectura de txt
 		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
@@ -38,7 +38,7 @@ public class Fuente {
 					} else { // no lo contiene
 						acum.put(c, 1);
 					}
-					total += 1;
+					this.cantSimbolos += 1;
 				} else {
 					isEnter = false;
 				}
@@ -49,34 +49,38 @@ public class Fuente {
 		for (HashMap.Entry<Character, Integer> entry : acum.entrySet()) { // recorre el hashmap
 			Character car = entry.getKey();
 			Integer i = entry.getValue();
-			this.simbolos.put(car, new Simbolo(car, (double) i / total));
+			this.simbolos.put(car, new Simbolo(car, (double) i / cantSimbolos));
 		}
 	}
 
-	public void set_tasa_compresion_RLC(double n) {
-		this.tasa_compresion_RLC = n;
+	public void setTasaCompresionRLC(double n) {
+		this.tasaCompresionRLC = n;
 	}
 
-	public double get_tasa_compresion_RLC() {
-		return this.tasa_compresion_RLC;
+	public double getTasaCompresionRLC() {
+		return this.tasaCompresionRLC;
 	}
 
-	public void mostrarFuente() {
-		DecimalFormat df = new DecimalFormat("0.000");
-		System.out.println("----------------- PARTE 1 ------------------");
-		System.out.println("____________________________________________");
-		System.out.println("Si  P(Si)       Huffman         Shannon-Fano");
-		System.out.println("____________________________________________");
+	public void mostrarFuente(String archivo) {
+		String tab = "";
+		DecimalFormat df = new DecimalFormat("0.0000");
+		System.out.println("______________________________________________________");
+		System.out.println("Si  P(Si)       Huffman                 Shannon-Fano");
+		System.out.println("______________________________________________________");
 		for (HashMap.Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
 			Character car = entry.getKey();
 			Simbolo s = entry.getValue();
-			System.out.println(car + "   " + df.format(s.probabilidad) + "\t" + s.getCodHuffman() + "\t\t"
+			if (s.getCodHuffman().length() < 8)
+				tab = "\t";
+			else
+				tab = "";
+			System.out.println(car + "   " + df.format(s.probabilidad) + "\t" + s.getCodHuffman() + "\t\t" + tab
 					+ s.getCodShannonFano());
 		}
-		System.out.println("____________________________________________\n");
+		System.out.println("______________________________________________________\n");
 		try {
-			System.out.println("RLC: " + this.generaRLC("fuente.txt"));
-			System.out.println("Tasa de compresión: " + df.format(this.get_tasa_compresion_RLC()) + " : 1");
+			System.out.println("RLC: " + this.generaRLC(archivo));
+			System.out.println("Tasa de compresión: " + df.format(this.getTasaCompresionRLC()) + " : 1");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -84,10 +88,12 @@ public class Fuente {
 		System.out.println("HUFFMAN:");
 		System.out.println("   Rendimiento: " + df.format(this.rendimiento("huffman")));
 		System.out.println("   Redundancia: " + df.format(this.redundancia("huffman")));
+		System.out.println("   Tasa de Compresion: " + df.format(this.tasaDeCompresion("huffman")) + " : 1");
 		System.out.println();
 		System.out.println("SHANNON-FANO:");
 		System.out.println("   Rendimiento: " + df.format(this.rendimiento("shannonfano")));
 		System.out.println("   Redundancia: " + df.format(this.redundancia("shannonfano")));
+		System.out.println("   Tasa de Compresion: " + df.format(this.tasaDeCompresion("shannonfano")) + " : 1");
 		System.out.println();
 	}
 
@@ -201,7 +207,6 @@ public class Fuente {
 //--------------------------------------------------------------------------------------------------------------------RLC
 	public String generaRLC(String nombreArchivo) throws FileNotFoundException {
 		int h, cont = 1; // Cuenta la cantidad de caracteres repetidos
-
 		int tamanio_original = 0;
 		int tamanio_RLC = 0;
 
@@ -238,10 +243,11 @@ public class Fuente {
 			}
 			String s = Character.toString(cAct) + Integer.toString(cont);
 			RLC.append(s);
+			tamanio_RLC += 2;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.set_tasa_compresion_RLC((double) tamanio_original / tamanio_RLC);
+		this.setTasaCompresionRLC((double) tamanio_original / tamanio_RLC);
 
 		return RLC.toString();
 	}
@@ -281,4 +287,19 @@ public class Fuente {
 		return this.entropia() / this.longitudMedia(codigo);
 	}
 
+//----------------------------------------------------------------------------------------------------------------------TASA DE COMPRESION
+	public double tasaDeCompresion(String codigo) {
+		double cantBytes = 0;
+
+		for (Entry<Character, Simbolo> entry : this.simbolos.entrySet()) {
+			Simbolo s = entry.getValue();
+
+			if (codigo == "huffman") {
+				cantBytes += (s.getProbabilidad() * this.cantSimbolos * s.getCodHuffman().length()) / 8;
+			} else if (codigo == "shannonfano") {
+				cantBytes += (s.getProbabilidad() * this.cantSimbolos * s.getCodShannonFano().length()) / 8;
+			}
+		}
+		return this.cantSimbolos / cantBytes;
+	}
 }

@@ -32,7 +32,6 @@ public class Canal {
 
 	public void mostrarCanal() {
 		DecimalFormat df = new DecimalFormat("0.000");
-		System.out.println("----------------- PARTE 2 -------------------");
 		System.out.println("Ai  P(Ai)");
 		for (int k = 0; k < this.i; k++) {
 			System.out.println("A" + (k + 1) + "  " + this.priori[k]);
