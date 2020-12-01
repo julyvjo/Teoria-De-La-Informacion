@@ -20,19 +20,21 @@ public class main {
 
 		fuenteEspañol.codificarHuffman();
 		fuenteEspañol.codificarShannonFano();
-		fuenteEspañol.mostrarFuente("mdp-español.txt");
+		//fuenteEspañol.mostrarFuente("mdp-español.txt");
 		fuenteSueco.codificarHuffman();
 		fuenteSueco.codificarShannonFano();
-		fuenteSueco.mostrarFuente("mdp-sueco.txt");
+		//fuenteSueco.mostrarFuente("mdp-sueco.txt");
 		
 		//-----------------------------------------PARTE 2-----------------------------------------
 		
 		Canal canal = new Canal();
 		try {
 			canal.leerCanalTXT("canal.txt");
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		canal.calculos();
 		canal.mostrarCanal();
 	}
 }

@@ -9,6 +9,9 @@ import java.util.Scanner;
 
 public class Canal {
 	double[] priori = new double[10];
+	double[] probB = new double[10];
+	double[][] posteriori = new double[10][10];
+	double[] Hposteriori = new double[10];
 	double[][] mat = new double[10][10];
 	int i = 0, j = 0;
 
@@ -39,12 +42,103 @@ public class Canal {
 		System.out.println();
 		System.out.println("Matriz del Canal:");
 		for (int p = 0; p < this.i; p++) {
-			System.out.print("|");
+			System.out.print("| ");
 			for (int q = 0; q < this.j; q++) {
-				System.out.print(this.mat[p][q] + " ");
+				System.out.print(df.format(this.mat[p][q]) + " ");
 			}
 			System.out.println("|");
 		}
+		System.out.println();
+		
+		System.out.println("CALCULOS\n");
+		System.out.println("- H(A) = " + df.format(this.Hpriori()));
+		System.out.println("- H(A/B) = " + df.format(this.equivocacion()));
+		System.out.println("- I(A,B) = " + df.format(this.infoMutua()));
+	}
+	
+	//--------------------------------------------------------------------------------------------CALCULOS
+	
+	public void calculos() {
+		//se invocrian todos los calculos a realizar del canal
+		this.calculaProbB();
+		this.calculaProbPosteriori();
+		this.calculaHposteriori();
+	}
+	
+	public double cantInfo(double p) {
+		double res = 0;
+		
+		if( p != 0 )
+			res = Math.log10( 1 / p ) / Math.log10(2);
+		
+		return res;
+	}
+	
+	public double Hpriori() {
+		double hpriori = 0;
+		
+		for(int i=0; i<this.i ; i++) {
+			
+			hpriori += this.priori[i] * this.cantInfo(this.priori[i]);
+		}
+		
+		return hpriori;
+	}
+	
+	public void calculaHposteriori() {
+		
+		for(int j=0; j<this.j ; j++) {
+			double h = 0;
+			for(int i=0; i<this.i ; i++) {
+				h += this.posteriori[i][j] * this.cantInfo(this.posteriori[i][j]); 
+			}
+			this.Hposteriori[j] = h;
+		}
+		
+	}
+	
+	public void calculaProbB() {
+		
+		for(int j=0; j<this.j ; j++) {
+			
+			double prob = 0;
+			for(int i=0; i<this.i ; i++) {
+				
+				prob += this.mat[i][j] * this.priori[i];
+			}
+			
+			this.probB[j] = (double) Math.round(prob*1000)/1000;
+		}
+	}
+	
+	public void calculaProbPosteriori() {
+		//prob( ai / bi ) -> matriz
+		
+		for(int i=0; i<this.i ; i++) {
+			
+			for(int j=0; j<this.j ; j++) {
+				
+				posteriori[i][j] = (double) (this.mat[i][j] * this.priori[i] / this.probB[j]);
+			}
+			
+		}
+		
+	}
+	
+	public double equivocacion() {
+		double equiv = 0;
+		
+		for(int j=0; j<this.j ; j++) {
+			
+			equiv += (double) (this.Hposteriori[j] * this.probB[j]);
+		}
+		
+		return equiv;
+	}
+	
+	public double infoMutua() {
+		
+		return this.Hpriori() - this.equivocacion();
 	}
 
 }
