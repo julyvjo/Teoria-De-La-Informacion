@@ -20,10 +20,10 @@ public class main {
 
 		fuenteEspañol.codificarHuffman();
 		fuenteEspañol.codificarShannonFano();
-		//fuenteEspañol.mostrarFuente("mdp-español.txt");
+		fuenteEspañol.mostrarFuente("mdp-español.txt");
 		fuenteSueco.codificarHuffman();
 		fuenteSueco.codificarShannonFano();
-		//fuenteSueco.mostrarFuente("mdp-sueco.txt");
+		fuenteSueco.mostrarFuente("mdp-sueco.txt");
 		
 		//-----------------------------------------PARTE 2-----------------------------------------
 		
