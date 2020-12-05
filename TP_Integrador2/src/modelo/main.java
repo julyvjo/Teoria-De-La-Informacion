@@ -20,21 +20,30 @@ public class main {
 
 		fuenteEspañol.codificarHuffman();
 		fuenteEspañol.codificarShannonFano();
-		//fuenteEspañol.mostrarFuente("mdp-español.txt");
+		fuenteEspañol.mostrarFuente("mdp-español.txt");
 		fuenteSueco.codificarHuffman();
 		fuenteSueco.codificarShannonFano();
 		//fuenteSueco.mostrarFuente("mdp-sueco.txt");
 		
 		//-----------------------------------------PARTE 2-----------------------------------------
 		
-		Canal canal = new Canal();
+		Canal canal1 = new Canal();
+		Canal canal2 = new Canal();
+		Canal canal3 = new Canal();
 		try {
-			canal.leerCanalTXT("canal.txt");
+			canal1.leerCanalTXT("canal1.txt");
+			canal2.leerCanalTXT("canal2.txt");
+			canal3.leerCanalTXT("canal3.txt");
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		canal.calculos();
-		canal.mostrarCanal();
+		canal1.calculos();
+		canal2.calculos();
+		canal3.calculos();
+		
+		canal1.mostrarCanal();
+		canal2.mostrarCanal();
+		canal3.mostrarCanal();
 	}
 }
