@@ -51,7 +51,6 @@ public class Canal {
 		System.out.println();
 		
 		System.out.println("CALCULOS\n");
-		System.out.println("- H(A) = " + df.format(this.Hpriori()));
 		System.out.println("- H(A/B) = " + df.format(this.equivocacion()));
 		System.out.println("- I(A,B) = " + df.format(this.infoMutua()));
 	}
