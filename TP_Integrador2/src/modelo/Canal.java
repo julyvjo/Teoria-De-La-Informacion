@@ -1,10 +1,9 @@
 package modelo;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Canal {
@@ -15,9 +14,10 @@ public class Canal {
 	double[][] mat = new double[10][10];
 	int i = 0, j = 0;
 
+	// Metodo que lee el .TXT y carga el canal
 	public void leerCanalTXT(String nombreArchivo) throws FileNotFoundException {
 		File file = new File(nombreArchivo);
-		Scanner sc = new Scanner(file);
+		Scanner sc = new Scanner(file).useLocale(Locale.US);
 
 		this.i = sc.nextInt();
 		this.j = sc.nextInt();
@@ -49,94 +49,85 @@ public class Canal {
 			System.out.println("|");
 		}
 		System.out.println();
-		
+
 		System.out.println("CALCULOS\n");
 		System.out.println("- H(A/B) = " + df.format(this.equivocacion()));
 		System.out.println("- I(A,B) = " + df.format(this.infoMutua()));
 	}
-	
-	//--------------------------------------------------------------------------------------------CALCULOS
-	
+
+	// --------------------------------------------------------------------------------------------CALCULOS
+
 	public void calculos() {
-		//se invocrian todos los calculos a realizar del canal
+		// Se invocrian todos los calculos a realizar del canal
 		this.calculaProbB();
 		this.calculaProbPosteriori();
 		this.calculaHposteriori();
 	}
-	
+
 	public double cantInfo(double p) {
 		double res = 0;
-		
-		if( p != 0 )
-			res = Math.log10( 1 / p ) / Math.log10(2);
-		
+
+		if (p != 0)
+			res = Math.log10(1 / p) / Math.log10(2);
+
 		return res;
 	}
-	
+
 	public double Hpriori() {
 		double hpriori = 0;
-		
-		for(int i=0; i<this.i ; i++) {
-			
+
+		for (int i = 0; i < this.i; i++) {
+
 			hpriori += this.priori[i] * this.cantInfo(this.priori[i]);
 		}
-		
+
 		return hpriori;
 	}
-	
+
 	public void calculaHposteriori() {
-		
-		for(int j=0; j<this.j ; j++) {
+
+		for (int j = 0; j < this.j; j++) {
 			double h = 0;
-			for(int i=0; i<this.i ; i++) {
-				h += this.posteriori[i][j] * this.cantInfo(this.posteriori[i][j]); 
+			for (int i = 0; i < this.i; i++) {
+				h += this.posteriori[i][j] * this.cantInfo(this.posteriori[i][j]);
 			}
 			this.Hposteriori[j] = h;
 		}
-		
+
 	}
-	
+
 	public void calculaProbB() {
-		
-		for(int j=0; j<this.j ; j++) {
-			
+
+		for (int j = 0; j < this.j; j++) {
 			double prob = 0;
-			for(int i=0; i<this.i ; i++) {
-				
+			for (int i = 0; i < this.i; i++) {
 				prob += this.mat[i][j] * this.priori[i];
 			}
-			
-			this.probB[j] = (double) Math.round(prob*1000)/1000;
+			this.probB[j] = (double) Math.round(prob * 1000) / 1000;
 		}
 	}
-	
+
 	public void calculaProbPosteriori() {
-		//prob( ai / bi ) -> matriz
-		
-		for(int i=0; i<this.i ; i++) {
-			
-			for(int j=0; j<this.j ; j++) {
-				
+		// prob( ai / bi ) -> matriz
+
+		for (int i = 0; i < this.i; i++) {
+			for (int j = 0; j < this.j; j++) {
 				posteriori[i][j] = (double) (this.mat[i][j] * this.priori[i] / this.probB[j]);
 			}
-			
 		}
-		
 	}
-	
+
 	public double equivocacion() {
 		double equiv = 0;
-		
-		for(int j=0; j<this.j ; j++) {
-			
+
+		for (int j = 0; j < this.j; j++) {
 			equiv += (double) (this.Hposteriori[j] * this.probB[j]);
 		}
-		
+
 		return equiv;
 	}
-	
+
 	public double infoMutua() {
-		
 		return this.Hpriori() - this.equivocacion();
 	}
 

@@ -17,6 +17,7 @@ public class Fuente {
 	int cantSimbolos = 0;
 	double tasaCompresionRLC = 0;
 
+	// Metodo que lee el .TXT y carga la fuente
 	public void leerFuenteTXT(String nombreArchivo) throws FileNotFoundException {
 		Character c;
 		HashMap<Character, Integer> acum = new HashMap<Character, Integer>();
@@ -147,7 +148,6 @@ public class Fuente {
 	}
 
 // ---------------------------------------------------------------------------------------------------------SHANNON-FANO
-
 	public void codificarShannonFano() {
 		TreeSet<NodoSF> lista = new TreeSet<NodoSF>();
 		// Crear lista
@@ -195,6 +195,7 @@ public class Fuente {
 		}
 	}
 
+	// Metodo auxiliar para encotrar donde divide el conjunto Shannon-Fano
 	private boolean esMasCercanoALaMitad(double probTotal, double probAcum, double probAct) { // true mete el actual
 		boolean respuesta = false;
 
@@ -205,6 +206,7 @@ public class Fuente {
 	}
 
 //--------------------------------------------------------------------------------------------------------------------RLC
+	// Metodo que genera la codificacion RLC a medida que lee el .TXT
 	public String generaRLC(String nombreArchivo) throws FileNotFoundException {
 		int h, cont = 1; // Cuenta la cantidad de caracteres repetidos
 		int tamanio_original = 0;
@@ -287,7 +289,6 @@ public class Fuente {
 		return this.entropia() / this.longitudMedia(codigo);
 	}
 
-//----------------------------------------------------------------------------------------------------------------------TASA DE COMPRESION
 	public double tasaDeCompresion(String codigo) {
 		double cantBytes = 0;
 

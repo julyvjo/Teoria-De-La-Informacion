@@ -1,7 +1,6 @@
 package modelo;
 
 public class NodoHuffman implements Comparable {
-
 	double prob;
 	Character caracter;
 	NodoHuffman izq = null;
