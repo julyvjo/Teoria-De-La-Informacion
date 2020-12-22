@@ -48,9 +48,31 @@ public class Canal {
 			}
 			System.out.println("|");
 		}
-		System.out.println();
 
-		System.out.println("CALCULOS\n");
+		System.out.println("\nCALCULOS INTERMEDIOS\n");
+		
+		
+		System.out.println("Probabilidades de salida:");
+		for (int k = 0; k < this.j; k++) {
+			System.out.print(df.format(this.probB[k]) + "  ");
+		}
+
+		System.out.println("\n\nProbabilidades a-posteriori:");
+		for (int p = 0; p < this.i; p++) {
+			System.out.print("| ");
+			for (int q = 0; q < this.j; q++) {
+				System.out.print(df.format(this.posteriori[p][q]) + " ");
+			}
+			System.out.println("|");
+		}
+		
+		System.out.println("\nEntropia a-priori: " + df.format(this.Hpriori()));
+		
+		System.out.println("\nEntropias a-posteriori:");
+		for (int k = 0; k < this.j; k++) {
+			System.out.print(df.format(this.Hposteriori[k]) + "  ");
+		}
+		System.out.println("\n\nRESULTADOS\n");
 		System.out.println("- H(A/B) = " + df.format(this.equivocacion()));
 		System.out.println("- I(A,B) = " + df.format(this.infoMutua()));
 	}
@@ -66,7 +88,7 @@ public class Canal {
 
 	public double cantInfo(double p) {
 		double res = 0;
-
+		
 		if (p != 0)
 			res = Math.log10(1 / p) / Math.log10(2);
 
@@ -89,7 +111,7 @@ public class Canal {
 		for (int j = 0; j < this.j; j++) {
 			double h = 0;
 			for (int i = 0; i < this.i; i++) {
-				h += this.posteriori[i][j] * this.cantInfo(this.posteriori[i][j]);
+				h += Math.abs(this.posteriori[i][j] * this.cantInfo(this.posteriori[i][j]));
 			}
 			this.Hposteriori[j] = h;
 		}
