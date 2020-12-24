@@ -75,6 +75,7 @@ public class Canal {
 		System.out.println("\n\nRESULTADOS\n");
 		System.out.println("- H(A/B) = " + df.format(this.equivocacion()));
 		System.out.println("- I(A,B) = " + df.format(this.infoMutua()));
+		System.out.println("- I(B,A) = " + df.format(this.infoMutuaSimetrica()));
 	}
 
 	// --------------------------------------------------------------------------------------------CALCULOS
@@ -152,5 +153,30 @@ public class Canal {
 	public double infoMutua() {
 		return this.Hpriori() - this.equivocacion();
 	}
+	
+	public double infoMutuaSimetrica() {
+        double infosimetrica = 0;
+        //I(B,A) = H(B) - H(B/A)
+        double hb = 0; //H(B)
+        double hba = 0; //H(B/A)
 
+        //armam H(B)
+        for(int j=0; j<this.j; j++) {
+            hb += this.probB[j] * this.cantInfo(this.probB[j]);
+        }
+
+        //arma H(B/A)
+        double[] hBa = new double[10]; //esto es H(B/a), lo necesitamos para calcular H(B/A)
+
+        for(int i=0; i<this.i; i++) {
+            hBa[i] = 0;
+            for(int j=0; j<this.j; j++) {
+                hBa[i] += this.mat[i][j] * this.cantInfo(this.mat[i][j]);
+            }
+        }
+        for(int i=0; i<this.i; i++) {
+            hba += this.priori[i] * hBa[i];
+        }
+        return hb - hba;
+    }
 }
